@@ -6,7 +6,10 @@
   import { general } from "../config/stores/global.js";
   import { user } from "../config/stores/user.js";
 
-  // 
+  // Importing components
+  import {
+    Avatar
+  } from "darkmode-components/src/index";
 
   // onMount event
   // Here we'll get the list of popular
@@ -70,8 +73,16 @@
 
     <!-- Some texts -->
     <div class="w-full px-4 md:px-8 lg:px-12">
-      <h1 class="text-3xl font-bold text-white">The simplest bloging platform out there.</h1>
-      <p class="text-gray-300 text-sm">Even though it's a very simple platform, we try to make it the best. We always listen to what our users ask of us and what they say about us.</p>
+      {#if $user.tokens.length >= 1}
+        <h1 class="text-3xl font-bold text-white">How are you feeling today?</h1>
+        <div>
+          <p class="text-gray-300 text-xs">You'll feel much better if you tell everyone how you feel. You have something to say, show everyone how you feel? Just write what you want, and we'll try to tell others about your thoughts.</p>
+          <p class="mt-4 text-gray-300 text-xs">We, together with <a class="text-white border-b-2 border-dotted border-gray-700" href="https://universes.wavees.ml/paw">Paw Universes</a>, will help you with your mood, and if something is wrong, we will try to make it better.</p>
+        </div>
+      { :else }
+        <h1 class="text-3xl font-bold text-white">The simplest bloging platform out there.</h1>
+        <p class="text-gray-300 text-sm">Even though it's a very simple platform, we try to make it the best. We always listen to what our users ask of us and what they say about us.</p>
+      {/if}
     </div>
 
     <!-- Create new Post -->
@@ -105,7 +116,59 @@
   </div>
 
   <!-- List of blog posts -->
-  <div class="w-2/3 bg-gray-100 h-full">
-    
+  <div class="w-2/3 bg-gray-100 h-full relative py-6 md:py-16 py:py-32">
+    <!-- Another Small Header -->
+    <div class="absolute inset-x-0 top-0 w-full flex justify-end py-3">
+      <!-- User Account -->
+      {#if $user.tokens.length >= 1}
+        <div class="flex items-center">
+          <!-- Avatar -->
+          <span class="relative">
+            <Avatar size="2" type="image" avatar={$user.current.avatar} />
+            <!-- Badge to show type of provider (Wavees) -->
+            <span style="z-index: 1000;" class="absolute rounded-full w-4 h-4 flex justify-center items-center text-center bg-black top-0 right-0">
+              <p style="font-family: Junegull; font-size: .50rem;" class="text-white">w</p>
+            </span>
+          </span>
+
+          <!-- Texts (Username and Email) -->
+          <div class="mx-4">
+            <p class="">{$user.current.username}</p>
+            <p class="text-gray-700 text-xs">{$user.current.email}</p>
+          </div>
+
+          <!-- Some Buttons -->
+          <div class="flex">
+            <!-- Favorites List Button -->
+            <button class="p-2 hover:bg-gray-200 rounded-lg hover:shadow-md mx-2">
+              <img style="width: 1.2rem;" src="./icons/star.svg" alt="Favorites Icon">
+            </button>
+
+            <!-- User Settings Button -->
+            <button class="p-2 hover:bg-gray-200 rounded-lg hover:shadow-md mx-2">
+              <img style="width: 1.2rem;" src="./icons/user.svg" alt="User Icon">
+            </button>
+          </div>
+        </div>
+      {/if}
+    </div>
+
+    <!-- Content -->
+    <div class="w-full h-full bg-red-500">
+      
+    </div>
+
+    <!-- Footer -->
+    <div class="absolute inset-x-0 bottom-0 py-5 flex justify-between items-center px-12">
+      <!-- Copyright -->
+      <p class="text-gray-500 text-sm">© Wavees Group, 2020</p>
+
+      <!-- Some links -->
+      <div class="flex text-sm text-gray-400">
+        <a class="mx-4" href="https://company.wavees.ml/">Company</a>
+        <a class="mx-4" href="https://developer.wavees.ml/blog">Developers</a>
+        <a class="mx-4" href="https://wavees.ml/contact">Contact</a>
+      </div>
+    </div>
   </div>
 </main>
