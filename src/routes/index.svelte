@@ -3,6 +3,8 @@
   import axios from "axios";
   import { onMount } from "svelte";
 
+  import { goto } from "@sapper/app";
+
   import { general } from "../config/stores/global.js";
   import { user } from "../config/stores/user.js";
 
@@ -17,6 +19,66 @@
   onMount(() => {
 
   });
+
+  // Small Posts array
+  let posts = [
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/900x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1000x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1100x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1200x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1300x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1400x900"
+    },
+    {
+      id: "",
+
+      title: "Test #1",
+      subtitle: "Here are just blah blah blah? Yeah, just blah blah and another blah",
+    
+      background: "https://source.unsplash.com/random/1500x900"
+    }
+  ];
 
   let menuOpened = false;
 </script>
@@ -154,8 +216,46 @@
     </div>
 
     <!-- Content -->
-    <div class="w-full h-full bg-red-500">
-      
+    <div class="w-full h-full flex flex-wrap relative">
+      <!-- Get help with Mood -->
+      <div class="w-1/4 h-1/2 px-4 py-4 relative flex-grow">
+        <div class="bg-white rounded-lg shadow-md w-full h-full px-4 flex flex-col justify-center items-center relative">
+          <!-- Title && Subtitle -->
+          <div class="mb-6">
+            <h1 class="text-2xl font-semibold">Bored or sad?</h1>
+            <p class="text-gray-700 text-xs">We can try to help cheer you up. Just trust us.</p>
+          </div>
+
+          <!-- Button -->
+          <div class="absolute inset-x-0 bottom-0 py-6 w-full flex justify-center">
+            <button class="px-4 py-2 rounded-full bg-black text-white hover:text-black hover:bg-white">
+              Let's do this
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts List -->
+      {#each posts as post}
+        <div class="w-1/4 h-1/2 px-4 py-4 relative flex-grow">
+          <div style="background: url('{post.background}')" class="bg-white rounded-lg shadow-md w-full h-full px-4 flex flex-col justify-center items-center relative">
+            <!-- Title && Subtitle -->
+            <div class="mb-6">
+              <h1 class="text-2xl text-white font-semibold">{post.title}</h1>
+              <p class="text-gray-200 text-xs">{post.subtitle}</p>
+            </div>
+
+            <!-- Button -->
+            <div class="absolute inset-x-0 bottom-0 py-6 flex justify-center">
+              <button on:click={(e) => {
+                goto(`/${post.id}`);
+              }} class="px-4 py-2 rounded-full bg-black text-white hover:text-black hover:bg-white">
+                Read
+              </button>
+            </div>
+          </div>
+        </div>        
+      {/each}
     </div>
 
     <!-- Footer -->
