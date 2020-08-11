@@ -41,34 +41,36 @@
 <div class="flex relative mt-8">
   <div class="w-1/2 flex flex-col justify-center">
     <!-- Stories -->
-    <div class="my-4 flex items-center">
+    <div class="my-4 flex items-center relative">
+      {#if !postsLoaded}
+        <div class="absolute inset-x-0 top-0 bg-white w-full h-full flex justify-center items-center">
+          <Spinner size="15" />
+        </div>
+      {/if}
+
       <!-- Icon -->
       <img style="height: 1.5rem;" src="./icons/book.svg" alt="Stories Icon">
 
-      <div class="{ postsLoaded ? "ml-4" : "ml-2" }">
-        {#if !postsLoaded}
-          <span class="rounded-lg bg-gray-200 text-gray-200 my-2 px-4">100</span>
-          <span class="rounded-lg bg-gray-200 text-gray-200 my-2 px-4">story</span>
-        { :else }
-          <h1 class="text-bold text-black text-xl">100</h1>
-          <p class="text-gray-700">stories</p>
-        {/if}
+      <div class="ml-4">
+        <h1 class="text-bold text-black text-xl">100</h1>
+        <p class="text-gray-700">stories</p>
       </div>
     </div>
 
     <!-- Followers -->
     <div class="my-4 flex items-center relative">
+      {#if !followersLoaded}
+        <div class="absolute inset-x-0 top-0 bg-white w-full h-full flex justify-center items-center">
+          <Spinner size="15" />
+        </div>
+      {/if}
+      
       <!-- Icon -->
       <img style="height: 1.5rem;" src="./icons/heart.svg" alt="Followers Icon">
       
-      <div class="{ followersLoaded ? "ml-4" : "ml-2" }">
-        {#if !followersLoaded}
-          <span class="rounded-lg bg-gray-200 text-gray-200 my-2 px-4">100</span>
-          <span class="rounded-lg bg-gray-200 text-gray-200 my-2 px-4">follow</span>
-        { :else }
-          <h1 class="text-bold text-black text-xl">{followers}</h1>
-          <p class="text-gray-700">followers</p>
-        {/if}
+      <div class="ml-4">
+        <h1 class="text-bold text-black text-xl">{followers}</h1>
+        <p class="text-gray-700">followers</p>
       </div>
     </div>
   </div>

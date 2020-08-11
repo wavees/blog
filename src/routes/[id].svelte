@@ -17,6 +17,7 @@
   // redirect our user to User Profile page
   // or to Blog Post page
   onMount(() => {
+    data.clearData();
     data.loadData($page.params.id);
   });
 
@@ -27,7 +28,7 @@
 
       // Redirect to Author page
       if (object.type == "user") {
-        document.location.replace(`/author/${object.user.id}`);
+        document.location.replace(`/author/${$page.params.id}`);
       }
     };
   });

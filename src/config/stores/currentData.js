@@ -21,6 +21,14 @@ function createCurrentDataStore() {
   return {
     subscribe,
 
+    clearData: () => {
+      update((object) => {
+        object = store;
+
+        return object;
+      });
+    },
+
     // loadData
     // This function will load
     // some data (?)
