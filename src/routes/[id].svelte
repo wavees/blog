@@ -27,7 +27,7 @@
 
       // Redirect to Author page
       if (object.type == "user") {
-        goto(`/author/${object.user.id}`);
+        document.location.replace(`/author/${object.user.id}`);
       }
     };
   });

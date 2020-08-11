@@ -2,7 +2,10 @@
 import { writable } from "svelte/store";
 import axios from "axios";
 
-import { url, version } from "../application/api";
+import { wavees } from "../application/api";
+
+const url = wavees.url;
+const version = wavees.version;
 
 // 
 function createCurrentDataStore() {

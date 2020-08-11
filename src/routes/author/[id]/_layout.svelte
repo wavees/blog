@@ -2,6 +2,8 @@
   // Let's now import some modules.
   import { currentData as data } from "../../../config/stores/currentData.js";
 
+  import { fade } from "svelte/transition";
+
   import { user } from "../../../config/stores/user.js";
   import { goto, stores } from "@sapper/app";
 
@@ -16,6 +18,9 @@
     Avatar
   } from "darkmode-components/src/index";
 
+  import Statistics from "../../../components/Profile/Statistics.svelte";
+  import FollowButton from "../../../components/Profile/FollowButton.svelte";
+
   // onMount event
   onMount(() => {
     if (!$data.loaded) {
@@ -29,7 +34,7 @@
 
   <!-- Loading Spinner -->
   {#if !$data.loaded}
-    <div style="z-index: 1001;" class="w-full h-full absolute inset-x-0 top-0 flex justify-center items-center bg-black">
+    <div out:fade style="z-index: 1004;" class="w-full h-full absolute inset-x-0 top-0 flex justify-center items-center bg-black">
       <div class="flex flex-col items-center justify-center">
         <!-- Error Screen -->
         {#if $data.error}
@@ -54,8 +59,14 @@
 
     <!-- Logotype -->
     <div class="mx-6 text-center">
-      <h1 style="font-family: Junegull;" class="text-base text-white text-bold">wavees</h1>
-      <p class="text-xs text-gray-200">blog</p>
+      {#if $user.tokens.length > 0}
+        <span style="cursor: pointer;" on:click={(e) => goto(`/${$user.current.id}`)}>
+          <Avatar type="image" size="2.5" avatar={$user.current.avatar} />
+        </span>
+      { :else }
+        <h1 style="font-family: Junegull;" class="text-base text-white text-bold">wavees</h1>
+        <p class="text-xs text-gray-200">blog</p>
+      {/if}
     </div>
 
     <!-- New Post -->
@@ -82,9 +93,7 @@
 
         <!-- Buttons -->
         <div class="flex justify-center w-full items-center mt-6">
-          <button class="mx-4 rounded-full bg-black text-white hover:text-black hover:bg-white px-6 py-2">
-            Follow
-          </button>
+          <FollowButton uid={$data.user.id} />
 
           <button class="mx-4 px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
             Message
@@ -92,39 +101,7 @@
         </div>
 
         <!-- Statistics -->
-        <div class="flex relative mt-8">
-          <div class="w-1/2 flex flex-col justify-center">
-            <!-- Stories -->
-            <div class="my-4 flex items-center">
-              <!-- Icon -->
-              <img style="height: 1.5rem;" src="./icons/book.svg" alt="Stories Icon">
-
-              <div class="ml-4">
-                <h1 class="text-bold text-black text-xl">100</h1>
-                <p class="text-gray-700">stories</p>
-              </div>
-            </div>
-
-            <!-- Followers -->
-            <div class="my-4 flex items-center">
-              <!-- Icon -->
-              <img style="height: 1.5rem;" src="./icons/heart.svg" alt="Followers Icon">
-              
-              <div class="ml-4">
-                <h1 class="text-bold text-black text-xl">100</h1>
-                <p class="text-gray-700">followers</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="w-1/2 flex">
-            <!-- More statistics -->
-            <div class="my-4 flex flex-col flex-grow items-center rounded-lg bg-gray-200 py-4 px-4">
-              <h1 class="text-bold text-black text-sm">Soon on Blog:</h1>
-              <p class="text-gray-700 text-xs">«‎Statistics update: More statistics means more information!»‎</p>
-            </div>
-          </div>
-        </div>
+        <Statistics uid={$data.user.id} />
 
         <!-- Some Other Buttons -->
         <div class="mt-6 w-full">

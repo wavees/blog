@@ -54,10 +54,6 @@
 	<div style="height: 100vh;" class="w-full flex justify-center items-center bg-black">
 		<!-- Branding -->
 		<div class="flex flex-col justify-center items-center">
-			<div class="flex mb-6 items-center">
-				<h1 style="font-family: Junegull;" class="text-2xl text-white text-bold">wavees</h1>
-			</div>
-
 			<Spinner size="15" color="#fff" />
 		</div>
 	</div>

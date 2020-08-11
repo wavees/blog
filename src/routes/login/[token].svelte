@@ -4,7 +4,7 @@
   import { stores, goto } from "@sapper/app"
   import axios from "axios";
 
-  import { api } from "../../config/stores/global";
+  import api from "../../config/application/api";
 
   import Cookie from "cookie-universal";
 
@@ -35,7 +35,7 @@
     // token exists or not.
     const token = $page.params.token;
 
-    axios.get(`${$api.url}/${$api.version}/account/${token}`)
+    axios.get(`${api.wavees.url}/${api.wavees.version}/account/${token}`)
     .then((response) => {
       // Let's now work with this
       // response...
@@ -72,14 +72,10 @@
  -->
 <div style="min-height: 100vh;" class="w-full h-full flex flex-col justify-center items-center">
   <!-- Spinner -->
-	<div style="height: 100vh; background-color: {$theme == "dark" ? $colors.dark[0] : $colors.light[4]}" class="w-full flex justify-center items-center">
+	<div style="height: 100vh;" class="w-full flex justify-center items-center bg-black">
 		<!-- Branding -->
 		<div class="flex flex-col justify-center items-center">
-			<div class="flex mb-6 items-center">
-				<h1 style="font-family: Junegull; color: {$theme == "dark" ? $colors.light[2] : $colors.dark[2]}" class="text-3xl text-bold">wavees</h1>
-			</div>
-
-			<Spinner />
+			<Spinner size="15" color="#fff" />
 		</div>
 	</div>
 </div>

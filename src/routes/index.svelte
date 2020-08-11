@@ -13,6 +13,8 @@
     Avatar
   } from "darkmode-components/src/index";
 
+  import Profile from "../components/Profile.svelte";
+
   // onMount event
   // Here we'll get the list of popular
   // blog posts.
@@ -184,19 +186,23 @@
       <!-- User Account -->
       {#if $user.tokens.length >= 1}
         <div class="flex items-center">
-          <!-- Avatar -->
-          <span class="relative">
-            <Avatar size="2" type="image" avatar={$user.current.avatar} />
-            <!-- Badge to show type of provider (Wavees) -->
-            <span style="z-index: 1000;" class="absolute rounded-full w-4 h-4 flex justify-center items-center text-center bg-black top-0 right-0">
-              <p style="font-family: Junegull; font-size: .50rem;" class="text-white">w</p>
+          <div style="cursor: pointer;" on:click={(e) => goto(`/${$user.current.id}`)} class="flex items-center">
+            <!-- Avatar -->
+            <span class="relative">
+              <Avatar size="2.5" type="image" avatar={$user.current.avatar} />
+              <!-- Badge to show type of provider (Wavees or Discord) -->
             </span>
-          </span>
 
-          <!-- Texts (Username and Email) -->
-          <div class="mx-4">
-            <p class="">{$user.current.username}</p>
-            <p class="text-gray-700 text-xs">{$user.current.email}</p>
+            <!-- Texts (Username and Email) -->
+            <div class="mx-4">
+              <p class="">{$user.current.username}</p>
+
+              {#if $user.current.posts > 0}
+                <p class="text-gray-700 text-xs">Author</p>
+              { :else }
+                <p class="text-gray-700 text-xs">Reader</p>
+              {/if}
+            </div>
           </div>
 
           <!-- Some Buttons -->
