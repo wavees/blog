@@ -18,13 +18,20 @@
     Avatar
   } from "darkmode-components/src/index";
 
-  import Statistics from "../../../components/Profile/Statistics.svelte";
-  import FollowButton from "../../../components/Profile/FollowButton.svelte";
+  import AuthorAlias from "../../../components/Profile/Sidebar/AuthorAlias.svelte";
+
+  import SidebarStatistics from "../../../components/Profile/Sidebar/Statistics.svelte";
+  import SidebarButtons from "../../../components/Profile/Sidebar/Buttons.svelte";
 
   // onMount event
   onMount(() => {
     if (!$data.loaded) {
       data.loadData($page.params.id, "user");
+    } else {
+      if ($data.user.id != $page.params.id) {
+        data.clearData();
+        data.loadData($page.params.id);
+      };
     };
   });
 </script>
@@ -78,7 +85,11 @@
     <div class="w-full px-0 md:px-6 lg:px-12 flex flex-col md:flex-row py-4 md:py-8 lg:py-12">
       <!-- Author Information -->
       <div class="w-full md:w-1/4 lg:w-1/5 px-3 py-4 md:py-6">
-        <div class="flex items-center">
+        <!-- Alias -->
+        <AuthorAlias />
+
+        <!-- User Profile information -->
+        <div class="flex items-center mt-2">
           <Avatar size="4" type="image" avatar={$data.user.avatar} />
         
           <div class='mx-6'>
@@ -92,16 +103,10 @@
         </div>
 
         <!-- Buttons -->
-        <div class="flex justify-center w-full items-center mt-6">
-          <FollowButton uid={$data.user.id} />
-
-          <button class="mx-4 px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
-            Message
-          </button>
-        </div>
+        <SidebarButtons />
 
         <!-- Statistics -->
-        <Statistics uid={$data.user.id} />
+        <SidebarStatistics />
 
         <!-- Some Other Buttons -->
         <div class="mt-6 w-full">
@@ -117,18 +122,22 @@
           </div>
 
           <!-- Blog Posts -->
-          <div style="cursor: pointer;" class="w-full flex items-center py-3 px-4 md:px-6 my-4">
+          <div style="cursor: not-allowed;" class="w-full flex items-center py-3 px-4 md:px-6 my-4 text-gray-700">
             <!-- Icon -->
-            <img style="height: 1.2rem;" src="./icons/book-open.svg" alt="Stories Icon">
+            <span style="height: 1.2rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </span>
 
             <!-- Text -->
             <h1 class="ml-4">Blog Posts</h1>
           </div>
 
           <!-- Life Story -->
-          <div style="cursor: pointer;" class="w-full flex items-center py-3 px-4 md:px-6 my-4">
+          <div style="cursor: not-allowed;" class="w-full flex items-center py-3 px-4 md:px-6 my-4 text-gray-700">
             <!-- Icon -->
-            <img style="height: 1.2rem;" src="./icons/archive.svg" alt="Life Story Icon">
+            <span style="height: 1.2rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-archive"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+            </span>
 
             <!-- Text -->
             <h1 class="ml-4">Life Story</h1>

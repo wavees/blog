@@ -2,15 +2,12 @@
 import { writable } from "svelte/store";
 import axios from "axios";
 
-import { wavees } from "../application/api";
-
-const url = wavees.url;
-const version = wavees.version;
+import api from "../application/api";
 
 // 
 function createCurrentDataStore() {
   // Main store structure
-  let store = {
+  const store = {
     loaded: false,
     user: {}
   };
@@ -23,9 +20,47 @@ function createCurrentDataStore() {
 
     clearData: () => {
       update((object) => {
-        object = store;
+        object = {
+          loaded: false,
+          user: {}
+        };
 
         return object;
+      });
+    },
+
+    // checkData
+    // This function will  
+    checkData: (id) => {
+      currentData.clearData();
+
+      // Firstly, let's check if it's an
+      // user's alias or not.
+      axios.get(`${api.blog.url}/${api.blog.version}/author/${id}`)
+      .then((response) => {
+        let data = response.data;
+        
+        // It's an user's alias, so
+        // let's now load information
+        // about this user.
+        currentData.loadData(data.uid);
+      }).catch(() => {
+        // Let's now check if it's an user
+        // object or not.
+        axios.get(`${api.wavees.url}/${api.wavees.version}/user/${id}`)
+        .then(() => {
+          // It's an user id, so let's load some information
+          // about this user.
+          currentData.loadData(id);
+        }).catch((error) => {
+          // And now let's check if it's a
+          // blog post or no...
+          update((object) => {
+            object.error = true;
+
+            return object;
+          });
+        });
       });
     },
 
@@ -37,7 +72,7 @@ function createCurrentDataStore() {
       // Let's now load some data about
       // user with this id.
       if (type == "user") {
-        axios.get(`${url}/${version}/user/${id}`)
+        axios.get(`${api.wavees.url}/${api.wavees.version}/user/${id}`)
         .then((response) => {
           let data = response.data;
 

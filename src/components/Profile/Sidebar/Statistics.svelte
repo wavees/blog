@@ -1,8 +1,10 @@
 <script>
   // Importing modules
   import axios from "axios";
-  import api from "../../config/application/api.js";
+  import api from "../../../config/application/api.js";
 
+  import { currentData as data } from "../../../config/stores/currentData.js";
+  import events from "../../../config/stores/events.js";
   import { onMount } from "svelte"
 
   // Importing components
@@ -10,12 +12,27 @@
     Spinner
   } from "darkmode-components/src/index";
 
+  // Let's now start our small EventListener.
+  events.subscribe((event) => {
+    // Now we need to update our statistics
+    // counter.
+    if (event.event == "updateSidebarStatistics") {
+      updateStatistics();
+    };
+  });
+
   // onMount event
   // Here we'll load all needed
   // information about this user.
   onMount(() => {
+    updateStatistics();
+  });
+
+  // Function, that'll handle statistics
+  // update.
+  function updateStatistics() {
     // Loading Followers count;
-    axios.get(`${api.blog.url}/${api.blog.version}/${uid}/followers`)
+    axios.get(`${api.blog.url}/${api.blog.version}/author/${uid}/followers`)
     .then((response) => {
 
       // Let's now gather Followers Count
@@ -26,7 +43,7 @@
 
     // Loading Posts count;
     postsLoaded = true;
-  });
+  };
 
   let posts = 0;
   let postsLoaded = false;
@@ -34,7 +51,7 @@
   let followers = 0;
   let followersLoaded = false;
 
-  export let uid;
+  export let uid = $data.user.id;
 </script>
 
 <!-- Layout -->
