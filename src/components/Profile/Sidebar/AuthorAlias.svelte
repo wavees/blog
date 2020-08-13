@@ -112,7 +112,7 @@
   export let uid = $data.user.id;
 </script>
 
-<div style="cursor: pointer;" class="h-4 w-full flex items-center">
+<div style="cursor: pointer;" class="h-5 w-full flex items-center">
   <!-- 
     Let's now check if user is
     viewing his own profile or no.
@@ -136,34 +136,36 @@
 
         {#if alias == originalAlias}
           <!-- Cancel Button -->
-          <img on:click={() => editing = false} style="cursor: pointer; width: 20px; height: 20px;" class="mx-2" src="./icons/x.svg" alt="Cancel icon">
+          <button style="min-width: 30px;" class="px-1" on:click={() => editing = false}>
+            <img style="cursor: pointer;" src="./icons/x.svg" alt="Cancel icon">
+          </button>
         { :else }
           <!-- Save Changes Button -->
-          <img on:click={() => {
-            changeAlias(alias);
-          }} style="cursor: pointer; width: 20px; height: 20px;" class="mx-2" src="./icons/save.svg" alt="Save icon">
+          <button style="min-width: 30px;" class="px-1" on:click={() => {
+              changeAlias(alias);
+            }}>
+            <img style="cursor: pointer;" src="./icons/save.svg" alt="Save icon">
+          </button>
         {/if}
       {/if}
     { :else }
 
       <!-- Error Message -->
       {#if error != null}
-        <!-- Icon -->
-        <img style="width: 1rem;" src="./icons/alert-triangle.svg" alt="Warning Icon">
-
         <!-- Text -->
-        <p class="text-semibold ml-2">{error}</p>
+        <input class="mx-0 font-semibold border-b-2 border-solid border-white" bind:value={error} type="text" readonly >
       { :else }
         {#if alias == uid}
-          <p class="text-base text-gray-700 font-semibold">Change profile's Alias</p>
+          <p class="text-base font-semibold">Change profile's Alias</p>
         { :else }
-          <h1 class="text-base font-bold">/{alias}</h1>
+          <p class="font-bold mx-0">/</p>
+          <input class="mx-0 font-bold border-b-2 border-solid border-white" bind:value={alias} type="text" readonly >
         {/if}
       {/if}
 
       <!-- Edit Alias Icon -->
-      <button on:click={(e) => editAlias()} class="mx-2">
-        <img style="height: 1rem;" src="./icons/edit-3.svg" alt="Pen icon">
+      <button on:click={(e) => editAlias()} style="min-width: 30px;" class="px-1">
+        <img src="./icons/edit-3.svg" alt="Pen icon">
       </button>
     {/if}
   { :else }

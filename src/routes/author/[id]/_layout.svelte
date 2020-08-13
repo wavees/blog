@@ -29,7 +29,6 @@
       data.loadData($page.params.id, "user");
     } else {
       if ($data.user.id != $page.params.id) {
-        data.clearData();
         data.loadData($page.params.id);
       };
     };
@@ -67,7 +66,10 @@
     <!-- Logotype -->
     <div class="mx-6 text-center">
       {#if $user.tokens.length > 0}
-        <span style="cursor: pointer;" on:click={(e) => goto(`/${$user.current.id}`)}>
+        <span style="cursor: pointer;" on:click={() => {
+          data.clearData();
+          document.location.replace(`/${$user.current.id}`);
+        }}>
           <Avatar type="image" size="2.5" avatar={$user.current.avatar} />
         </span>
       { :else }
@@ -89,7 +91,7 @@
         <AuthorAlias />
 
         <!-- User Profile information -->
-        <div class="flex items-center mt-2">
+        <div class="flex items-center mt-4">
           <Avatar size="4" type="image" avatar={$data.user.avatar} />
         
           <div class='mx-6'>
