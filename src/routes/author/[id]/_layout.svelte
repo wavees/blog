@@ -4,8 +4,11 @@
 
   import { fade } from "svelte/transition";
 
+  import events from "../../../config/stores/events.js";
   import { user } from "../../../config/stores/user.js";
   import { goto, stores } from "@sapper/app";
+
+  import io from "socket.io-client";
 
   const { page } = stores();
 
@@ -31,6 +34,41 @@
       if ($data.user.id != $page.params.id) {
         data.loadData($page.params.id);
       };
+    };
+  });
+
+  // Let's now start our websocket...
+  const socket = io(api.blog.url);
+
+  socket.on('connect', () => {
+    // Let's now send list of events,
+    // that we want to listen to.
+    socket.emit("settings", { uid: $data.user.id || $page.params.id, listenTo: ["followAuthor", "aliasChange"] })
+  });
+
+  // Listen to FollowAuthor event
+  socket.on('followAuthor', (e) => {
+    if (e.uid == $user.current.id) {
+      // Let's update our follow button
+      // and Sidebar Statistics
+      events.call("updateSidebarStatistics");
+      setTimeout(() => {
+        events.call("updateFollowButton");
+      }, 50);
+    } else {
+      // Let's just update our statistics field;
+      events.call("updateSidebarStatistics");
+    };
+  });
+
+  // Listen to AliasChange event
+  socket.on('aliasChange', (e) => {
+    console.log("ALIAS CHANGE");
+    console.log(e);
+    
+    if (e.uid == $page.params.id) {
+      // Let's now just update current Author's alias;
+      events.call("updateSidebarAuthorAlias");
     };
   });
 </script>

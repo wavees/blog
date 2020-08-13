@@ -18,7 +18,8 @@
     "darkmode-components": "^1.1.1",
     "express": "^4.17.1",
     "moment": "^2.25.3",
-    "sirv": "^0.4.0"
+    "sirv": "^0.4.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

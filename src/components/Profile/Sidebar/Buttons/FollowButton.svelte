@@ -16,12 +16,25 @@
   // Here we'll get some
   // information about this user.
   onMount(() => {
+    updateFollowButton();
+  });
+
+  events.subscribe((event) => {
+    if (event.event == "updateFollowButton") {
+      // Let's now update our follow button.
+      updateFollowButton();
+    };
+  });
+
+  // Function, that'll update our follow button.
+  function updateFollowButton() {
+    loaded = false;
     axios.get(`${api.blog.url}/${api.blog.version}/user/${$user.current.id}/follows/${uid}`)
     .then((response) => {
       loaded = true;
       follows = response.data.follows;
     });
-  });
+  };
 
   // Small function, that'll handle process
   // of following/unfollowing.
