@@ -39,10 +39,10 @@
   // Small function, that'll handle process
   // of following/unfollowing.
   function follow() {
+    loaded = false;
+    
     axios.post(`${api.blog.url}/${api.blog.version}/user/${$user.current.id}/follow/${uid}`)
     .then((response) => {
-      loaded = true;
-
       if (response.data.follows == null) {
         follows = true;
       } else {
