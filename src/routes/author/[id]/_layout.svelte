@@ -5,6 +5,7 @@
   import { fade } from "svelte/transition";
 
   import events from "../../../config/stores/events.js";
+  import api from "../../../config/application/api.js";
   import { user } from "../../../config/stores/user.js";
   import { goto, stores } from "@sapper/app";
 
