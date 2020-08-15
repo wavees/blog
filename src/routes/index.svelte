@@ -86,12 +86,12 @@
 </script>
 
 <!-- Main site Layout -->
-<main class="h-100vh w-full flex">
+<main class="lg:h-100vh w-full flex flex-col lg:flex-row">
 
   <!-- Sidebar -->
-  <div class="h-100vh w-1/3 bg-black flex justify-center items-center relative">
+  <div class="h-100vh w-full lg:w-1/3 bg-black flex justify-center items-center relative">
     <!-- Mini-Header -->
-    <div class="absolute inset-0-x top-0 w-full flex justify-between items-center py-6 px-8">
+    <div class="absolute inset-0-x top-0 w-full flex justify-center lg:justify-between items-center py-6 px-8">
       <!-- Logotype -->
       <div>
         <h1 style="font-family: Junegull" class="text-white font-bold">wavees</h1>
@@ -99,7 +99,7 @@
       </div>
 
       <!-- Links -->
-      <div class="flex items-center">
+      <div class="hiddenl lg:flex items-center">
         <!-- All Services Icon -->
         <div class="mx-3 relative">
           <span on:click={(e) => {
@@ -136,7 +136,7 @@
     </div>
 
     <!-- Some texts -->
-    <div class="w-full px-4 md:px-8 lg:px-12">
+    <div class="w-full px-12">
       {#if $user.tokens.length >= 1}
         <h1 class="text-3xl font-bold text-white">How are you feeling today?</h1>
         <div>
@@ -150,7 +150,7 @@
     </div>
 
     <!-- Create new Post -->
-    <div class="absolute inset-x-0 bottom-0 w-full px-8 py-6 flex justify-between items-center">
+    <div class="absolute inset-x-0 bottom-0 w-full px-4 lg:px-8 py-6 flex justify-between items-center">
       <!-- Texts -->
       <div>
         {#if $user.tokens.length >= 1}
@@ -170,7 +170,7 @@
           </button>
         { :else }
           <button on:click={(e) => {
-            window.location.href = `https://account.${$general.globalURL}/authorize/blog@wavees`;
+            window.location.href = `https://account.${$general.globalURL}/authorize/blog@wavees?permissions=${$general.permissions.join(',')}`;
           }} class="px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
             Log in
           </button>
@@ -180,9 +180,9 @@
   </div>
 
   <!-- List of blog posts -->
-  <div class="w-2/3 bg-gray-100 h-full relative py-6 md:py-16 py:py-32">
+  <div class="w-full lg:w-2/3 bg-gray-100 h-full relative py-6 md:py-16 py:py-32">
     <!-- Another Small Header -->
-    <div class="absolute inset-x-0 top-0 w-full flex justify-end py-3">
+    <div class="absolute inset-x-0 top-0 w-full hidden lg:flex justify-end py-3">
       <!-- User Account -->
       {#if $user.tokens.length >= 1}
         <div class="flex items-center">
@@ -224,7 +224,7 @@
     <!-- Content -->
     <div class="w-full h-full flex flex-wrap relative">
       <!-- Get help with Mood -->
-      <div class="w-1/4 h-1/2 px-4 py-4 relative flex-grow">
+      <div class="w-1/4 h-1/2 px-4 py-4 relative hidden lg:flex flex-grow">
         <div class="bg-white rounded-lg shadow-md w-full h-full px-4 flex flex-col justify-center items-center relative">
           <!-- Title && Subtitle -->
           <div class="mb-6">
@@ -243,7 +243,7 @@
 
       <!-- Posts List -->
       {#each posts as post}
-        <div class="w-1/4 h-1/2 px-4 py-4 relative flex-grow">
+        <div class="w-auto h-64 lg:w-1/4 lg:h-1/2 px-4 py-4 relative flex-grow">
           <div style="background: url('{post.background}')" class="bg-white rounded-lg shadow-md w-full h-full px-4 flex flex-col justify-center items-center relative">
             <!-- Title && Subtitle -->
             <div class="mb-6">
@@ -252,7 +252,7 @@
             </div>
 
             <!-- Button -->
-            <div class="absolute inset-x-0 bottom-0 py-6 flex justify-center">
+            <div class="absolute inset-x-0 bottom-0 py-2 lg:py-6 flex justify-center">
               <button on:click={(e) => {
                 goto(`/${post.id}`);
               }} class="px-4 py-2 rounded-full bg-black text-white hover:text-black hover:bg-white">
@@ -265,7 +265,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="absolute inset-x-0 bottom-0 py-5 flex justify-between items-center px-12">
+    <div class="absolute inset-x-0 bottom-0 py-5 hidden lg:flex justify-between items-center px-12">
       <!-- Copyright -->
       <p class="text-gray-500 text-sm">© Wavees Group, 2020</p>
 

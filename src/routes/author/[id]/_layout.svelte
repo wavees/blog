@@ -6,6 +6,8 @@
 
   import events from "../../../config/stores/events.js";
   import api from "../../../config/application/api.js";
+
+  import { general } from "../../../config/stores/global.js";
   import { user } from "../../../config/stores/user.js";
   import { goto, stores } from "@sapper/app";
 
@@ -64,9 +66,6 @@
 
   // Listen to AliasChange event
   socket.on('aliasChange', (e) => {
-    console.log("ALIAS CHANGE");
-    console.log(e);
-    
     if (e.uid == $page.params.id) {
       // Let's now just update current Author's alias;
       events.call("updateSidebarAuthorAlias");
@@ -112,8 +111,11 @@
           <Avatar type="image" size="2.5" avatar={$user.current.avatar} />
         </span>
       { :else }
-        <h1 style="font-family: Junegull;" class="text-base text-white text-bold">wavees</h1>
-        <p class="text-xs text-gray-200">blog</p>
+          <button on:click={(e) => {
+            window.location.href = `https://account.${$general.globalURL}/authorize/blog@wavees?permissions=${$general.permissions.join(',')}`;
+          }} class="px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
+            Log in
+          </button>
       {/if}
     </div>
 

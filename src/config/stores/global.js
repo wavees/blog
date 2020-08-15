@@ -5,7 +5,13 @@ readable({
   // Site url
   // Hmm, just site url, isn't it?
   globalURL: "wavees.ml",
-  currentURL: "blog.wavees.ml"
+  currentURL: "blog.wavees.ml",
+
+  permissions: [
+    "blog/changeAlias",
+    "blog/follow",
+    "blog/unfollow"
+  ]
 });
 
 export { general };
