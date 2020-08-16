@@ -29,13 +29,13 @@
   import SidebarStatistics from "../../../components/Profile/Sidebar/Statistics.svelte";
   import SidebarButtons from "../../../components/Profile/Sidebar/Buttons.svelte";
 
-  // onMount event
-  onMount(() => {
-    if (!$data.loaded) {
-      data.loadData($page.params.id, "user");
-    } else {
-      if ($data.user.id != $page.params.id) {
-        data.loadData($page.params.id);
+
+  data.subscribe((object) => {
+    if (object.alias != null) {
+      // Let's now check for our
+      // alias and replace it (if needed)
+      if ($page.params.id != object.alias) {
+        goto(`/${object.alias}/${$page.params.sid}`, true);
       };
     };
   });
@@ -106,7 +106,7 @@
       {#if $user.tokens.length > 0}
         <span style="cursor: pointer;" on:click={() => {
           data.clearData();
-          document.location.replace(`/${$user.current.id}`);
+          goto(`/${$user.current.alias == null ? $user.current.id : $user.current.alias}`);
         }}>
           <Avatar type="image" size="2.5" avatar={$user.current.avatar} />
         </span>

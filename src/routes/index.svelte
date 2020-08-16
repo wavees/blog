@@ -186,7 +186,7 @@
       <!-- User Account -->
       {#if $user.tokens.length >= 1}
         <div class="flex items-center">
-          <div style="cursor: pointer;" on:click={(e) => goto(`/${$user.current.id}`)} class="flex items-center">
+          <div style="cursor: pointer;" on:click={(e) => goto(`/${$user.current.alias == null ? $user.current.id : $user.current.alias}`)} class="flex items-center">
             <!-- Avatar -->
             <span class="relative">
               <Avatar size="2.5" type="image" avatar={$user.current.avatar} />

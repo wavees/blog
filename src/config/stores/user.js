@@ -2,10 +2,10 @@
 import { writable } from "svelte/store";
 import axios from "axios";
 
-import { wavees } from "../application/api";
+import api from "../application/api";
 
-const url = wavees.url;
-const version = wavees.version;
+const url = api.wavees.url;
+const version = api.wavees.version;
 
 // 
 // func createUserStore()
@@ -25,7 +25,9 @@ function createUserStore() {
       email: null,
       username: null,
       avatar: null,
-      coins: 100
+      coins: 100,
+
+      alias: null
     },
 
     tokens: [],
@@ -69,6 +71,8 @@ function createUserStore() {
         // is it.
         if (data.type == "user") {
           // And now let's populate our store with new data
+          loadAlias(data.uid);
+
           update((object) => {
             object.loaded = true;
 
@@ -101,6 +105,7 @@ function createUserStore() {
           axios.get(`${url}/${version}/account/${currentToken}`)
           .then((response) => {
             let data = response.data;
+            loadAlias(data.uid);
 
             // And now let's populate our store with new data
             update((object) => {
@@ -166,6 +171,15 @@ function createUserStore() {
 
         return object;
       });
+    },
+
+    // 
+    setAlias: (alias) => {
+      update((object) => {
+        object.current.alias = alias;
+
+        return object;
+      });
     }
 
     // setCurrent
@@ -178,6 +192,22 @@ function createUserStore() {
 };
 
 const user = createUserStore();
+
+async function loadAlias(uid, type = "user") {
+  axios.get(`${api.blog.url}/${api.blog.version}/author/${uid}/alias`)
+  .then((response) => {
+    let data = response.data;
+
+    if (data.alias != null) {
+      // Let's now update user's current alias.
+      if (type == "user") {
+        user.setAlias(data.alias);
+      } else if (type == "currentUser") {
+        current.setAlias(data.alias);
+      };
+    };
+  });
+};
 
 async function loadProfile(token) {
   axios.get(`${url}/${version}/account/${token}`)
@@ -250,6 +280,7 @@ function createCurrentUserStore() {
       axios.get(`${url}/${version}/user/${uid}`)
       .then((response) => {
         let data = response.data;
+        loadAlias(uid, "currentUser");
 
         update((object) => {
           object.username = data.username;

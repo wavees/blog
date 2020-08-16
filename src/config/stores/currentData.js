@@ -9,7 +9,9 @@ function createCurrentDataStore() {
   // Main store structure
   const store = {
     loaded: false,
-    user: {}
+    user: {},
+
+    alias: null
   };
 
   // Let's now get some 
@@ -64,17 +66,26 @@ function createCurrentDataStore() {
       });
     },
 
+    setAlias: (alias) => {
+      update((object) => {
+        object.alias = alias;
+
+        return object;
+      });
+    },
+
     // loadData
     // This function will load
     // some data (?)
     loadData: (id, type = "user") => {
-      
+    
       // Let's now load some data about
       // user with this id.
       if (type == "user") {
         axios.get(`${api.wavees.url}/${api.wavees.version}/user/${id}`)
         .then((response) => {
           let data = response.data;
+          loadAlias(id);
 
           update((object) => {
             object.type = "user";
@@ -103,5 +114,16 @@ function createCurrentDataStore() {
 };
 
 const currentData = createCurrentDataStore();
+
+async function loadAlias(uid) {
+  axios.get(`${api.blog.url}/${api.blog.version}/author/${uid}/alias`)
+  .then((response) => {
+    let data = response.data;
+
+    if (data.alias != null) {
+      currentData.setAlias(data.alias);
+    };
+  });
+};
 
 export { currentData };

@@ -3,8 +3,8 @@
   import { goto, stores } from "@sapper/app";
   import { onMount } from "svelte";
 
-  import { currentData as data } from "../config/stores/currentData.js";
-  
+  import { currentData as data } from "../../config/stores/currentData.js";
+
   const { page } = stores();
 
   // Importing components
@@ -20,19 +20,13 @@
     data.checkData($page.params.id);
   });
 
-  data.subscribe((object) => {
-    if (object.loaded) {
-      // And now let's redirect our user
-      // to specific page...
-
-      // Redirect to Author page
-      if (object.type == "user") {
-        document.location.replace(`/author/${object.user.id}`);
-      }
+  data.subscribe((data) => {
+    // @dataType: user
+    if (data.type == "user") {
+      goto(`/${$page.params.id}/activity`, true);
     };
   });
 </script>
-
 
 <main style="min-height: 100vh;" class="w-full relative">
   <div style="z-index: 1001;" class="w-full h-full absolute inset-x-0 top-0 flex justify-center items-center bg-black">
