@@ -39,7 +39,7 @@
       };
     });
 
-    let loginURI = `https://account.${$general.globalURL}/authorize/${encodeURIComponent("http://localhost:3000/login/:code")}?permissions=${$general.permissions.join(',')}`
+    let loginURI = `https://account.${$general.globalURL}/authorize/${encodeURIComponent("medals@wavees")}?permissions=${$general.permissions.join(',')}`
 
     // Let's firstly prepare our popup window
     let height = screen.height;
