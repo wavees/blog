@@ -29,6 +29,7 @@
   import SidebarStatistics from "../../../components/Profile/Sidebar/Statistics.svelte";
   import SidebarButtons from "../../../components/Profile/Sidebar/Buttons.svelte";
 
+  import LoginButton from "../../../components/Buttons/LoginButton.svelte";
 
   data.subscribe((object) => {
     if (object.alias != null) {
@@ -111,11 +112,9 @@
           <Avatar type="image" size="2.5" avatar={$user.current.avatar} />
         </span>
       { :else }
-          <button on:click={(e) => {
-            window.location.href = `https://account.${$general.globalURL}/authorize/blog@wavees?permissions=${$general.permissions.join(',')}`;
-          }} class="px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
-            Log in
-          </button>
+        <LoginButton>
+          Log in
+        </LoginButton>
       {/if}
     </div>
 

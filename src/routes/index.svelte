@@ -14,6 +14,7 @@
   } from "darkmode-components/src/index";
 
   import Profile from "../components/Profile.svelte";
+  import LoginButton from "../components/Buttons/LoginButton.svelte";
 
   // onMount event
   // Here we'll get the list of popular
@@ -169,11 +170,9 @@
             Write Something
           </button>
         { :else }
-          <button on:click={(e) => {
-            window.location.href = `https://account.${$general.globalURL}/authorize/blog@wavees?permissions=${$general.permissions.join(',')}`;
-          }} class="px-4 py-2 rounded-full bg-white text-black hover:text-white hover:bg-black">
+          <LoginButton>
             Log in
-          </button>
+          </LoginButton>
         {/if}
       </div>
     </div>

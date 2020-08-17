@@ -47,15 +47,15 @@
         cookies.set('_account_token', token, {
           path: '/'
         });
-        window.location.href = "/";
+        window.close();
       } else {
         // This token doesn't exists.
         cookies.remove('_account_token');
-        window.location.href = "/";
+        window.close();
       }
     }).catch((error) => {
       cookies.remove('_account_token');
-      window.location.href = "/";
+      window.close();
     });
   });
 </script>
