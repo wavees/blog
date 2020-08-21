@@ -3,8 +3,8 @@ import { writable } from "svelte/store";
 
 // Importing all Pages and Components,
 // that'll be exported.
-import PageAuthorIndex from "../../routes/_pages/author/index.svelte";
-import PageAuthorActivity from "../../routes/_pages/author/activity.svelte";
+import PageAuthorIndex from "../../pages/author/index.svelte";
+import PageAuthorActivity from "../../pages/author/activity.svelte";
 
 // 
 function createComponentsStore() {

@@ -15,27 +15,26 @@
     Spinner
   } from "darkmode-components/src/index";
 
-  // onMount function
-  // Here we'll load our user's
-  onMount(() => {
-    updateAlias();
+  // Editing state
+  // (Is user editing his current)
+  // alias or no?)
+  let editing = false;
+
+  // Loading state
+  let loading = false;
+
+  // Error "state"
+  let error = null;
+
+  let alias = $data.user.id;
+  let originalAlias;
+  export let uid = $data.user.id;
+
+  data.subscribe((object) => {
+    if (object.alias.alias) {
+      alias = object.alias.alias;
+    };
   });
-
-  // Function to update user's alias
-  // information.
-  function updateAlias() {
-    // Let's now make request to remote
-    // server to retrieve user's alias.
-    axios.get(`${api.blog.url}/${api.blog.version}/author/${uid}/alias`)
-    .then((response) => {
-      let data = response.data;
-
-      if (data.alias != null) {
-        alias = data.alias;
-        originalAlias = data.alias
-      };
-    });
-  };
 
   // Function, that'll handle alias-changing
   // process.
@@ -87,29 +86,6 @@
     loading = false;
     editing = true;
   };
-
-  // EventListener
-  events.subscribe((event) => {
-    // Event to update our user alias.
-    if (event.event == "updateSidebarAuthorAlias") {
-      updateAlias();
-    };
-  });
-
-  // Editing state
-  // (Is user editing his current)
-  // alias or no?)
-  let editing = false;
-
-  // Loading state
-  let loading = false;
-
-  // Error "state"
-  let error = null;
-
-  let alias = $data.user.id;
-  let originalAlias;
-  export let uid = $data.user.id;
 </script>
 
 <div style="cursor: pointer;" class="h-5 w-full flex items-center">

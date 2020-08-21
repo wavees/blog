@@ -1,7 +1,7 @@
 <script>
   // Importing modules
   import axios from "axios";
-  import api from "../../../config/application/api.js";
+  import api from "../../config/application/api.js";
 
   import { stores } from "@sapper/app";
   import { onMount } from "svelte";

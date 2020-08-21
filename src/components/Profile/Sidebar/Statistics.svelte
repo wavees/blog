@@ -4,54 +4,21 @@
   import api from "../../../config/application/api.js";
 
   import { currentData as data } from "../../../config/stores/currentData.js";
-  import events from "../../../config/stores/events.js";
-  import { onMount } from "svelte"
+
+  let posts = 0;
+  let followers = 0;
+
+  data.subscribe((object) => {
+    let followersObject = object.followers || {};
+    if (followersObject.count) {
+      followers = followersObject.count;
+    };
+  });
 
   // Importing components
   import {
     Spinner
   } from "darkmode-components/src/index";
-
-  // Let's now start our small EventListener.
-  events.subscribe((event) => {
-    // Now we need to update our statistics
-    // counter.
-    if (event.event == "updateSidebarStatistics") {
-      updateStatistics();
-    };
-  });
-
-  // onMount event
-  // Here we'll load all needed
-  // information about this user.
-  onMount(() => {
-    updateStatistics();
-  });
-
-  // Function, that'll handle statistics
-  // update.
-  function updateStatistics() {
-    // Loading Followers count;
-    axios.get(`${api.blog.url}/${api.blog.version}/author/${uid}/followers`)
-    .then((response) => {
-
-      // Let's now gather Followers Count
-      // from this response.
-      followersLoaded = true;
-      followers = response.data.count;
-    });
-
-    // Loading Posts count;
-    postsLoaded = true;
-  };
-
-  let posts = 0;
-  let postsLoaded = false;
-
-  let followers = 0;
-  let followersLoaded = false;
-
-  export let uid = $data.user.id;
 </script>
 
 <!-- Layout -->
@@ -59,29 +26,17 @@
   <div class="w-1/2 flex flex-col justify-center">
     <!-- Stories -->
     <div class="my-4 flex items-center relative">
-      {#if !postsLoaded}
-        <div class="absolute inset-x-0 top-0 bg-white w-full h-full flex justify-center items-center">
-          <Spinner size="15" />
-        </div>
-      {/if}
-
       <!-- Icon -->
       <img style="height: 1.5rem;" src="./icons/book.svg" alt="Stories Icon">
 
       <div class="ml-4">
-        <h1 class="text-bold text-black text-xl">100</h1>
+        <h1 class="text-bold text-black text-xl">{posts}</h1>
         <p class="text-gray-700">stories</p>
       </div>
     </div>
 
     <!-- Followers -->
     <div class="my-4 flex items-center relative">
-      {#if !followersLoaded}
-        <div class="absolute inset-x-0 top-0 bg-white w-full h-full flex justify-center items-center">
-          <Spinner size="15" />
-        </div>
-      {/if}
-      
       <!-- Icon -->
       <img style="height: 1.5rem;" src="./icons/heart.svg" alt="Followers Icon">
       

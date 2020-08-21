@@ -1,6 +1,7 @@
 <script>
   // Let's import application's styles
   import Tailwind from "../styles/tailwind.svelte";
+	import socket from "../network/socket.js";
 
 	// import
 	import { locale, locales } from "svelte-i18n";

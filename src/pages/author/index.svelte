@@ -1,14 +1,16 @@
 <script>
   // Let's now import some modules.
-  import { currentData as data } from "../../../config/stores/currentData.js";
+  import { currentData as data } from "../../config/stores/currentData.js";
 
   import { fade } from "svelte/transition";
 
-  import events from "../../../config/stores/events.js";
-  import api from "../../../config/application/api.js";
+  import events from "../../config/stores/events.js";
+  import api from "../../config/application/api.js";
 
-  import { general } from "../../../config/stores/global.js";
-  import { user } from "../../../config/stores/user.js";
+  import socket from "../../network/socket.js";
+
+  import { general } from "../../config/stores/global.js";
+  import { user } from "../../config/stores/user.js";
   import { goto, stores } from "@sapper/app";
 
   import io from "socket.io-client";
@@ -24,30 +26,53 @@
     Avatar
   } from "darkmode-components/src/index";
 
-  import AuthorAlias from "../../../components/Profile/Sidebar/AuthorAlias.svelte";
+  import AuthorAlias from "../../components/Profile/Sidebar/AuthorAlias.svelte";
 
-  import SidebarStatistics from "../../../components/Profile/Sidebar/Statistics.svelte";
-  import SidebarButtons from "../../../components/Profile/Sidebar/Buttons.svelte";
+  import SidebarStatistics from "../../components/Profile/Sidebar/Statistics.svelte";
+  import SidebarButtons from "../../components/Profile/Sidebar/Buttons.svelte";
 
-  import LoginButton from "../../../components/Buttons/LoginButton.svelte";
+  import LoginButton from "../../components/Buttons/LoginButton.svelte";
 
-  data.subscribe((object) => {
-    if (object.alias != null) {
-      // Let's now check for our
-      // alias and replace it (if needed)
-      if ($page.params.id != object.alias) {
-        goto(`/${object.alias}/${$page.params.sid}`, true);
-      };
+  import NetworkStatus from "../../components/NetworkStatus.svelte";
+
+  onMount(() => {
+    if (socket.connected) {
+      let currentId;
+
+      page.subscribe((object) => {
+        if (currentId != object.params.id) {
+          currentId = object.params.id;
+
+          socket.emit('getData', { type: "userData", uid: currentId });
+        };
+      });
+    } else {
+      socket.on('connect', () => {
+        let currentId;
+        
+        page.subscribe((object) => {
+          if (currentId != object.params.id) {
+            currentId = object.params.id;
+            
+            socket.emit('getData', { type: "userData", uid: currentId });
+          };
+        });
+      });
     };
   });
 
-  // Let's now start our websocket...
-  const socket = io(api.blog.url);
-
-  socket.on('connect', () => {
-    // Let's now send list of events,
-    // that we want to listen to.
-    socket.emit("settings", { uid: $data.user.id || $page.params.id, listenTo: ["followAuthor", "aliasChange"] })
+  // @data userData;
+  socket.on('userData', (e) => {
+    data.pasteData("user", e.data);
+    socket.emit("settings", { uid: e.data.id, listenTo: ["followAuthor", "aliasChange"] })
+  
+    // By the way, let's update our page
+    // alias (if we need to)
+    if (e.data.alias.alias != null) {
+      if ($page.params.id != e.data.alias.alias) {
+        goto(`/${e.data.alias.alias}/${$page.params.sid}`, true);
+      };
+    }
   });
 
   // Listen to FollowAuthor event
@@ -98,7 +123,7 @@
   {/if}
 
   <!-- Header -->
-  <div class="w-full flex justify-center py-2 bg-black items-center">
+  <div class="relative w-full flex justify-center h-12 bg-black items-center">
     <!-- Posts Button -->
     <a href="/discover" class="mx-6 text-sm text-gray-300">Discover</a>
 
@@ -120,6 +145,11 @@
 
     <!-- New Post -->
     <a href="/write" class="mx-6 text-sm text-gray-300">New Post</a>
+
+    <!-- Network Status button -->
+    <div class="flex items-center absolute inset-y-0 right-0 px-6">
+      <NetworkStatus />
+    </div>
   </div>
 
   <!-- Page content -->
